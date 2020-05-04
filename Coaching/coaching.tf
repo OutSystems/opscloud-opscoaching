@@ -29,7 +29,7 @@ variable "location" {
 }
 variable "coaching-persons" {
   type        = number
-  description = "Enter how many people in total will be in the coaching?"
+  description = "Enter how many people in total will be in the coaching"
 }
 variable "vm-admin" {
   type        = string
