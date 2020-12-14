@@ -184,7 +184,7 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   location                         = var.location
   resource_group_name              = azurerm_resource_group.rg-coaching.name
   network_interface_ids            = [azurerm_network_interface.nic-coaching[count.index].id]
-  vm_size                          = "Standard_B2s" #2vCPUs / 4 GB RAM
+  vm_size                          = "Standard_B2ms" #2vCPUs / 8 GB RAM
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
   storage_image_reference {
