@@ -21,7 +21,7 @@ variable "client-name" {
 variable "location" {
   type        = string
   description = "Enter the Azure Region for the creation of your Coaching Resource Group. Ex: West Europe / East US / East Asia / UAE North"
-  # Variable validation is currently in Beta - TF accepts only re2 based Regex
+  # TF accepts only re2 based Regex
   validation {
     condition     = can(regex("(?i)(\\W|^)(westeurope|eastus|eastasia|uaenorth|west\\seurope|east\\sus|east\\sasia|uae\\snorth)(\\W|$)", var.location))
     error_message = "The location must be either West Europe, East US, East Asia or UAE North ."
