@@ -1,0 +1,62 @@
+---
+trigger: none
+pr: none
+pool: Default
+
+parameters:
+- name: resourceRegion
+  displayName: Resource Region
+  type: string
+  default: westeurope
+- name: clientName
+  displayName: Client Name
+  type: string
+- name: externalTools
+  type: string
+  default: false
+
+resources:
+  repositories:
+  - repository: OutSystems/infrastructure-provisioning
+    type: github
+    endpoint: 'GitHub (Duarte)'
+    name: 'OutSystems/infrastructure-provisioning'
+
+jobs:
+- job: os_infra_bootup
+  displayName: 'OutSystems Infra bootup'
+  workspace:
+    clean: all
+  steps:
+
+  - checkout: OutSystems/infrastructure-provisioning 
+    clean: true
+    displayName: 'Checkout Infrastucture Scripts'
+   
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'Infra Bootcamp Automation'
+      scriptType: 'ps'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'terraform init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
+    displayName: 'Init Terraform Script'
+
+  - task: TerraformTaskV1@0
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="devops-tools=${{ parameters.externalTools }}"'
+      environmentServiceNameAzureRM: 'Infra Bootcamp Automation'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
+    timeoutInMinutes: 0
+    displayName: 'Run Terraform Script'
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        Get-Content tf_output.txt
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
+    displayName: 'Show Infra Information'
+...
