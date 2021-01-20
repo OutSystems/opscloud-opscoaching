@@ -13,7 +13,6 @@ parameters:
   type: string
 - name: coachingPersons
   type: string
-  default: false
 
 resources:
   repositories:
