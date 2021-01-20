@@ -52,11 +52,4 @@ jobs:
     timeoutInMinutes: 0
     displayName: 'Run Terraform Script'
 
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        Get-Content tf_output.txt
-      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
-    displayName: 'Show Infra Information'
 ...
