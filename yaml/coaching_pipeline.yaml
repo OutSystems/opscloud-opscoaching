@@ -47,7 +47,7 @@ jobs:
       provider: 'azurerm'
       command: 'apply'
       commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="coaching-persons=${{ parameters.coachingPersons }}"'
-      environmentServiceNameAzureRM: 'Infra Bootcamp Automation'
+      environmentServiceNameAzureRM: 'ospsopscloud'
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     timeoutInMinutes: 0
     displayName: 'Run Terraform Script'
