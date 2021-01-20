@@ -11,16 +11,16 @@ parameters:
 - name: clientName
   displayName: Client Name
   type: string
-- name: externalTools
+- name: coachingPersons
   type: string
   default: false
 
 resources:
   repositories:
-  - repository: OutSystems/infrastructure-provisioning
+  - repository: joaooamaral/platform_ops_coaching
     type: github
-    endpoint: 'GitHub (Duarte)'
-    name: 'OutSystems/infrastructure-provisioning'
+    endpoint: 'joaooamaral'
+    name: 'joaooamaral/platform_ops_coaching'
 
 jobs:
 - job: os_infra_bootup
@@ -29,7 +29,7 @@ jobs:
     clean: all
   steps:
 
-  - checkout: OutSystems/infrastructure-provisioning 
+  - checkout: joaooamaral/platform_ops_coaching
     clean: true
     displayName: 'Checkout Infrastucture Scripts'
    
@@ -46,7 +46,7 @@ jobs:
     inputs:
       provider: 'azurerm'
       command: 'apply'
-      commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="devops-tools=${{ parameters.externalTools }}"'
+      commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="coaching-persons=${{ parameters.coachingPersons }}"'
       environmentServiceNameAzureRM: 'Infra Bootcamp Automation'
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     timeoutInMinutes: 0
