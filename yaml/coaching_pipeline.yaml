@@ -34,7 +34,7 @@ jobs:
    
   - task: AzureCLI@2
     inputs:
-      azureSubscription: 'Infra Bootcamp Automation'
+      azureSubscription: 'ospsopscloud'
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: 'terraform init'
