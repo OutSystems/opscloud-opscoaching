@@ -37,7 +37,7 @@ jobs:
       azureSubscription: 'ospsopscloud'
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
-      inlineScript: 'terraform init'
+      inlineScript: 'az --version'
       useGlobalConfig: true
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Init Terraform Script'
