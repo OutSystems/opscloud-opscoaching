@@ -38,20 +38,6 @@ jobs:
       command: 'init'
       environmentServiceNameAzureRM: 'ospsopscloud'
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
-    timeoutInMinutes: 0
     displayName: 'Initialize Terraform Script'
-  
-  - task: TerraformTaskV2@0
-    inputs:
-      provider: 'azurerm'
-      command: 'apply'
-      commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="coaching-persons=${{ parameters.coachingPersons }}"'
-      environmentServiceNameAzureRM: 'ospsopscloud'
-      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
-    timeoutInMinutes: 0
-    displayName: 'Run Terraform Script'
-  
-    
-  
 
 ...
