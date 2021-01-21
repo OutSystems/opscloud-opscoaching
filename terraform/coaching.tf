@@ -208,7 +208,7 @@ resource "azurerm_virtual_machine" "vm-coaching" {
 }
 
 resource "azurerm_windows_virtual_machine" "vm-sql-coaching" {
-  name                  = "SQL-Coaching"
+  name                  = "VM-SQL-Coaching"
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg-coaching.name
   network_interface_ids = [azurerm_network_interface.nic-sql.id]
