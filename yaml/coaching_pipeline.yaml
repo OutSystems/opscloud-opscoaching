@@ -31,17 +31,17 @@ jobs:
   - checkout: joaooamaral/platform_ops_coaching
     clean: true
     displayName: 'Checkout Infrastucture Scripts'
-   
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: 'ospsopscloud'
-      scriptType: 'ps'
-      scriptLocation: 'inlineScript'
-      inlineScript: 'terraform init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
-    displayName: 'Init Terraform Script'
-
+  
   - task: TerraformTaskV1@0
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      environmentServiceNameAzureRM: 'ospsopscloud'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
+    timeoutInMinutes: 0
+    displayName: 'Initialize Terraform Script'
+  
+  - task: TerraformTaskV2@0
     inputs:
       provider: 'azurerm'
       command: 'apply'
@@ -50,5 +50,8 @@ jobs:
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     timeoutInMinutes: 0
     displayName: 'Run Terraform Script'
+  
+    
+  
 
 ...
