@@ -32,13 +32,14 @@ jobs:
     clean: true
     displayName: 'Checkout Infrastucture Scripts'
   
-  - task: TerraformTaskV1@0
-    inputs:
-      provider: 'azurerm'
-      command: 'init'
-      environmentServiceNameAzureRM: 'ospsopscloud'
-      backendServiceArm: 'ospsopscloud'
-      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
-    displayName: 'Initialize Terraform Script'
 
+  - task: Terraform@2
+    inputs:
+      TemplatePath: '../terraform/'
+      Arguments: 'init'
+      InstallTerraform: false
+      UseAzureSub: true
+      ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+      ConnectedServiceNameARM: 'ospsopscloud'
+      ManageState: false
 ...
