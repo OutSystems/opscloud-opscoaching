@@ -32,12 +32,13 @@ jobs:
     clean: true
     displayName: 'Checkout Infrastucture Scripts'
   
-  - task: AzurePowerShell@5
+
+  - task: AzureCLI@2
     inputs:
       azureSubscription: 'ospsopscloud'
-      ScriptType: 'InlineScript'
-      Inline: 'terraform init'
-      azurePowerShellVersion: 'LatestVersion'
+      ScriptType: 'ps'
+      scriptLocation: 'InlineScript'
+      inlineScript: 'terraform init'
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Init Terraform Script'
 
