@@ -37,6 +37,7 @@ jobs:
       provider: 'azurerm'
       command: 'init'
       environmentServiceNameAzureRM: 'ospsopscloud'
+      backendServiceArm: 'ServiceConnectionName'
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Initialize Terraform Script'
 
