@@ -1,11 +1,6 @@
 #############################################################################
 # DATA
 #############################################################################
-data "azurerm_shared_image" "coaching-shared-image" {
-  name                = "Coaching-Definition"
-  gallery_name        = "Coaching_Shared_Images"
-  resource_group_name = "PlatformOps_AzureTests"
-}
 data "azurerm_public_ip" "FEs-PIP" {
   count               = var.coaching-persons * 3
   name                = azurerm_public_ip.pip-coaching[count.index].name
@@ -55,6 +50,7 @@ provider "azurerm" {
 locals {
     admin_username = "oscoaching"
     admin_password = "P@$$w0rd1234!"
+    script_url     = "https://ospsautomation.blob.core.windows.net/osunattended/outsystems_setup.ps1"
 }
 resource "azurerm_resource_group" "rg-coaching" {
   name     = "${var.client-name}-Coaching"
@@ -187,14 +183,26 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   vm_size                          = "Standard_B2ms" #2vCPUs / 8 GB RAM
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
+  
   storage_image_reference {
-    id = data.azurerm_shared_image.coaching-shared-image.id
+  publisher = "MicrosoftWindowsServer"
+  offer     = "WindowsServer"
+  sku       = "2016-Datacenter"
+  version   = "latest"
   }
   storage_os_disk {
     name              = "VM-${count.index}-Coaching-OsDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
+  }
+  storage_data_disk {
+    name              = "VM-${count.index}-Coaching-DataDisk"
+    caching           = "ReadWrite"
+    create_option     = "Empty"
+    managed_disk_type = "Standard_LRS"
+    disk_size_gb      = 64
+    lun               = 0
   }
   os_profile {
     computer_name  = "VM-${count.index}-Coaching"
@@ -206,7 +214,26 @@ resource "azurerm_virtual_machine" "vm-coaching" {
     provision_vm_agent        = true
   }
 }
+resource "azurerm_virtual_machine_extension" "vm-coaching-ext" {
+  name                 = "VM-${count.index}-Coaching-Ext"
+  virtual_machine_id   = azurerm_virtual_machine.vm-coaching[count.index].id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.9"
+  protected_settings = <<PROTECTED_SETTINGS
+    {
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ops_coaching_setup.ps1"
+    }
+  PROTECTED_SETTINGS
 
+  settings = <<SETTINGS
+    {
+        "fileUris": [
+          "${local.script_url}"
+        ]
+    }
+  SETTINGS
+}
 resource "azurerm_windows_virtual_machine" "vm-sql-coaching" {
   name                  = "VM-SQL-Coaching"
   location              = var.location
