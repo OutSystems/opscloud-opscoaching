@@ -16,11 +16,6 @@ variable "client-name" {
 variable "location" {
   type        = string
   description = "Enter the Azure Region for the creation of your Coaching Resource Group. Ex: West Europe / East US / East Asia / UAE North"
-  # TF accepts only re2 based Regex
-  validation {
-    condition     = can(regex("(?i)(\\W|^)(westeurope|eastus|eastasia|uaenorth|west\\seurope|east\\sus|east\\sasia|uae\\snorth)(\\W|$)", var.location))
-    error_message = "The location must be either West Europe, East US, East Asia or UAE North ."
-  }
 }
 variable "coaching-persons" {
   type        = number
@@ -50,7 +45,7 @@ provider "azurerm" {
 locals {
     admin_username = "oscoaching"
     admin_password = "P@$$w0rd1234!"
-    script_url     = "https://ospsautomation.blob.core.windows.net/osunattended/outsystems_setup.ps1"
+    script_url     = "https://raw.githubusercontent.com/joaooamaral/platform_ops_coaching/public_ops_coaching/powershell/ops_coaching_setup.ps1"
 }
 resource "azurerm_resource_group" "rg-coaching" {
   name     = "${var.client-name}-Coaching"
