@@ -1,2 +1,50 @@
-# Platform Operations Coaching infrastructure provisioning
-Does this and that
+# OutSystems Ops Coaching Infrastructure Provisioning in Azure
+
+The infrastructure created is composed of:
+* 1 Resource Group 
+* 1 Vnet 
+* 1 Subnet 
+* 1 SQL Server (IaaS)
+* Multiple VMs based on the amount of people involved in the coaching (It will create 3 VMs for each person)
+
+
+
+# Instructions on how to use this artifacts
+## Through Command Line\Console
+### Setup Terraform and Azure CLI (first time only)
+
+If first time running a Terraform template, please do the following:
+
+* Install Azure CLI for [Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest&tabs=azure-cli), [Mac OS](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest) or [Linux](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) (It can take around 5 minutes to complete).
+* Once Azure CLI is installed, from PowerShell / Bash run `az login` to ensure the installation of Azure CLI is completed and you’re able to connect to our Azure subscription. You will need to login to Azure with your AD credentials (Example: joao.amaral@outsystems.com / secretpassword).
+    > If external use _external in your email address.
+
+* Download [version 0.14 of Terraform](https://releases.hashicorp.com/terraform/0.14.2/) and make sure you update the path environment variable
+    Example steps for Windows:
+    1. Go to [Terraform 0.14 Download link](https://releases.hashicorp.com/terraform/0.14.2/).
+    2. Download the applicable package to your local system.
+    3. Extract the package to the folder `C:\Program Files (x64)`. This path is used as an example. However, you can also the Terraform executable to any other location in your local system.
+    4. Update the path environment variable to include the folder where your Terraform executable is located.
+        * Go to the __Control Panel__.
+        * Click __System__.
+        * On a Windows 10 system, click __Advanced system settings__.
+        * Click __Environment Variables__ near the bottom of the window.
+        * In the System variables pane, click __Path__ and then click __Edit__.
+        * Click __New__. Add the path to the folder where your Terraform executable is located.
+        * Click __OK__ to save your changes and then click __OK__ to exit the Environment Variables windows. Then click __OK__ again to exit the System Properties window.
+
+* To verify your Terraform installation and check the version, launch PowerShell / Bash and run: `terraform -version`
+
+### Provision the infrastructure
+
+If you already installed Terraform and Azure CLI, then you can proceed with the provisioning of the resources in Azure.
+
+* Download/clone this repo.
+* Within PowerShell / Bash change directory to where you downloaded the Terraform Script on Step 1.
+* Run `terraform init`.
+* Run `terraform apply` and fill out the requested fields.
+![Requested Fields](terraform/docs/requested-fields.png "Requested Fields")
+* Enter `yes` to confirm the provisioning of the resources.
+* Terraform takes between 30 and 40 minutes to provision the factory.
+* Once it finishes provisioning the OutSystems factory, an output file named tf_output.txt is generated within the Terraform template folder with all relevant information.
+![Example Output](terraform/docs/example-output.png "Example Output")
