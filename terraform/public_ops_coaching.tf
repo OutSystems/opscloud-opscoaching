@@ -45,7 +45,7 @@ provider "azurerm" {
 locals {
     admin_username = "oscoaching"
     admin_password = "P@$$w0rd1234!"
-    script_url     = "https://raw.githubusercontent.com/joaooamaral/platform_ops_coaching/public_ops_coaching/powershell/ops_coaching_setup.ps1"
+    script_url     = "https://raw.githubusercontent.com/joaooamaral/platform_ops_coaching/master/powershell/ops_coaching_setup.ps1"
 }
 resource "azurerm_resource_group" "rg-coaching" {
   name     = "${var.client-name}-Coaching"
