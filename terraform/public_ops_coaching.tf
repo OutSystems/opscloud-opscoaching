@@ -210,8 +210,9 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   }
 }
 resource "azurerm_virtual_machine_extension" "vm-coaching-ext" {
-  name                 = "VM-${count.index}-Coaching-Ext"
-  virtual_machine_id   = azurerm_virtual_machine.vm-coaching[count.index].id
+  count              = var.coaching-persons * 3
+  name               = "VM-${count.index}-Coaching-Ext"
+  virtual_machine_id = azurerm_virtual_machine.vm-coaching[count.index].id
   publisher            = "Microsoft.Compute"
   type                 = "CustomScriptExtension"
   type_handler_version = "1.9"
