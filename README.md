@@ -9,7 +9,7 @@ The infrastructure created is composed of:
 
 
 
-# Instructions on how to use this artifacts
+# Instructions on how to use these artifacts
 ## Through Command Line\Console
 ### Setup Terraform and Azure CLI (first time only)
 
@@ -39,12 +39,19 @@ If first time running a Terraform template, please do the following:
 
 If you already installed Terraform and Azure CLI, then you can proceed with the provisioning of the resources in Azure.
 
-* Download/clone this repo.
-* Within PowerShell / Bash change directory to where you downloaded the Terraform Script on Step 1.
-* Run `terraform init`.
-* Run `terraform apply` and fill out the requested fields.
-![Requested Fields](terraform/docs/requested-fields.png "Requested Fields")
-* Enter `yes` to confirm the provisioning of the resources.
-* Terraform takes between 30 and 40 minutes to provision the factory.
-* Once it finishes provisioning the OutSystems factory, an output file named tf_output.txt is generated within the Terraform template folder with all relevant information.
-![Example Output](terraform/docs/example-output.png "Example Output")
+1. Download/clone this repo.
+2. Within PowerShell / Bash change directory to where you downloaded the Terraform Script on Step 1
+3. Run `terraform init`
+4. Run `terraform apply` and fill out the requested fields
+5. Enter `yes` to confirm the provisioning of the resources
+
+Terraform takes around 10-15 minutes to provision the resources. Once it finishes provisioning the resources, an output is presented within PowerShell / Bash with all relevant information.
+![Example Output](docs/tf_output.PNG "Example Output")
+
+
+### VMs considerations
+
+* VMs are consisted of a dual-core CPU, 8 GB of RAM and a separate drive to install the platform
+* OutSystems installation files are located under C:\Temp\OSFiles
+![Example Output](docs/osfiles.png "Example Output")
+* Windows Firewall needs to be properly configured to ensure communication across VMs
