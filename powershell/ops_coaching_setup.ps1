@@ -1,3 +1,6 @@
+#Download AZCopy
+Invoke-WebRequest -Uri 'https://platopsterraform.blob.core.windows.net/osunattended/azcopy.exe' -OutFile 'C:\Windows\System32\azcopy.exe'
+
 #Format the data disk and create partition
 Get-Disk | Where partitionstyle -eq 'raw' | Initialize-Disk -PartitionStyle MBR -PassThru | New-Partition -DriveLetter "O" -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel "OutSystems" -Confirm:$false
 
@@ -14,3 +17,8 @@ function Disable-UserAccessControl {
 }
 Disable-UserAccessControl
 Disable-InternetExplorerESC
+
+#Download OutSystems binaries
+azcopy copy 'https://platopsterraform.blob.core.windows.net/osfiles' 'C:\Temp' --recursive
+
+
