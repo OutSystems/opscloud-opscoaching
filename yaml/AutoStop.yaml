@@ -1,0 +1,51 @@
+---
+trigger: none
+pr: none
+pool: Default
+
+parameters:
+- name: resourceGroupName
+  displayName: Resource Group Name
+  type: string
+
+resources:
+  repositories:
+  - repository: joaooamaral/platform_ops_coaching
+    type: github
+    endpoint: 'joaooamaral'
+    name: 'joaooamaral/platform_ops_coaching'
+
+jobs:
+- job: os_infra_stop
+  displayName: 'OutSystems Infra Stop'
+  workspace:
+    clean: all
+  steps:
+
+  - checkout: joaooamaral/platform_ops_coaching
+    clean: true
+    displayName: 'Stop Infrastucture Script'
+  
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: 'ospsopscloud'
+      ScriptType: 'InlineScript'
+      Inline: |
+        $vmNamesToBeShutDown = Get-AzureRmVM -ResourceGroupName "${{ parameters.resourceGroupName }}"
+        foreach($vmName in $vmNamesToBeShutDown.name)
+        {
+            $resource = Get-AzureRmResourceGroup -name "${{ parameters.resourceGroupName }}"
+            if($vmName -ne $null)
+            {  
+                Write-Output "Stopping virtual machine..." + $vmName
+                Stop-AzureRmVM -name $vmName -ResourceGroupName $resource.ResourceGroupName -StayProvisioned -Force
+            }   
+            else
+            {
+                Write-output "Virtual machine not found:" + $vmName
+            }
+        }
+      azurePowerShellVersion: 'LatestVersion'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Stop Coaching Virtual Machines'
+...
