@@ -47,5 +47,5 @@ jobs:
         }
       azurePowerShellVersion: 'LatestVersion'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
-    displayName: 'Stop Coaching Virtual Machines'
+    displayName: 'Start Coaching Virtual Machines'
 ...
