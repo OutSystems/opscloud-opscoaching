@@ -16,21 +16,25 @@ resources:
     name: 'joaooamaral/platform_ops_coaching'
 
 jobs:
-- job: os_infra_stop
-  displayName: 'OutSystems Infra Stop'
+- job: os_infra_start
+  displayName: 'OutSystems Infra Start'
   workspace:
     clean: all
   steps:
 
   - checkout: joaooamaral/platform_ops_coaching
     clean: true
-    displayName: 'Stop Infrastucture Script'
+    displayName: 'Start Infrastucture Script'
   
-  - task: AzurePowerShell@5
+
+
+
+  - task: AzureCLI@2
     inputs:
       azureSubscription: 'ospsopscloud'
-      ScriptType: 'InlineScript'
-      Inline: |
+      ScriptType: 'ps'
+      scriptLocation: 'InlineScript'
+      inlineScript: |
         $vmNamesToBeStarted = Get-AzureRmVM -ResourceGroupName "${{ parameters.resourceGroupName }}"
         foreach($vmName in $vmNamesToBeStarted.name)
         {
@@ -45,7 +49,6 @@ jobs:
                 Write-output "Virtual machine not found:" + $vmName
             }
         }
-      azurePowerShellVersion: 'LatestVersion'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Start Coaching Virtual Machines'
 ...
