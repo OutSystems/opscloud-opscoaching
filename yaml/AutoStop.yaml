@@ -10,10 +10,10 @@ parameters:
 
 resources:
   repositories:
-  - repository: joaooamaral/platform_ops_coaching
+  - repository: OutSystems/opscloud-opscoaching
     type: github
-    endpoint: 'joaooamaral'
-    name: 'joaooamaral/platform_ops_coaching'
+    endpoint: 'Coaching Infrastructure Provisioning'
+    name: 'OutSystems/opscloud-opscoaching'
 
 jobs:
 - job: os_infra_stop
@@ -22,7 +22,7 @@ jobs:
     clean: all
   steps:
 
-  - checkout: joaooamaral/platform_ops_coaching
+  - checkout: OutSystems/opscloud-opscoaching
     clean: true
     displayName: 'Stop Infrastucture Script'
   
