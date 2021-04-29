@@ -18,7 +18,7 @@ resources:
   repositories:
   - repository: OutSystems/opscloud-opscoaching
     type: github
-    endpoint: 'OutSystems'
+    endpoint: 'Coaching Infrastructure Provisioning'
     name: 'OutSystems/opscloud-opscoaching'
 
 jobs:
