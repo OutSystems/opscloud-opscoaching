@@ -10,45 +10,42 @@ parameters:
 
 resources:
   repositories:
-  - repository: OutSystems/opscloud-opscoaching
+  - repository: joaooamaral/platform_ops_coaching
     type: github
-    endpoint: 'Coaching Infrastructure Provisioning'
-    name: 'OutSystems/opscloud-opscoaching'
+    endpoint: 'joaooamaral'
+    name: 'joaooamaral/platform_ops_coaching'
 
 jobs:
-- job: os_infra_start
-  displayName: 'OutSystems Infra Start'
+- job: os_infra_stop
+  displayName: 'OutSystems Infra Stop'
   workspace:
     clean: all
   steps:
 
-  - checkout: OutSystems/opscloud-opscoaching
+  - checkout: joaooamaral/platform_ops_coaching
     clean: true
-    displayName: 'Start Infrastucture Script'
+    displayName: 'Stop Infrastucture Script'
   
-
-
-
-  - task: AzureCLI@2
+  - task: AzurePowerShell@5
     inputs:
       azureSubscription: 'ospsopscloud'
-      ScriptType: 'ps'
-      scriptLocation: 'InlineScript'
-      inlineScript: |
-        $vmNamesToBeStarted = Get-AzureRmVM -ResourceGroupName "${{ parameters.resourceGroupName }}"
+      ScriptType: 'InlineScript'
+      Inline: |
+        $vmNamesToBeStarted = Get-AzVM -ResourceGroupName "${{ parameters.resourceGroupName }}"
         foreach($vmName in $vmNamesToBeStarted.name)
         {
-            $resource = Get-AzureRmResourceGroup -name "${{ parameters.resourceGroupName }}"
+            $resource = Get-AzResourceGroup -Name "${{ parameters.resourceGroupName }}"
             if($vmName -ne $null)
             {  
                 Write-Output "Starting virtual machine..." + $vmName
-                Start-AzureRmVM -Name $vmName -ResourceGroupName $resource.ResourceGroupName
+                Start-AzVM -Name $vmName -ResourceGroupName $resource.ResourceGroupName
             }   
             else
             {
                 Write-output "Virtual machine not found:" + $vmName
             }
         }
+      azurePowerShellVersion: 'LatestVersion'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Start Coaching Virtual Machines'
 ...
