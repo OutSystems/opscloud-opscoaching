@@ -16,15 +16,15 @@ resources:
     name: 'OutSystems/opscloud-opscoaching'
 
 jobs:
-- job: os_infra_stop
-  displayName: 'OutSystems Infra Stop'
+- job: os_infra_start
+  displayName: 'OutSystems Infra Start'
   workspace:
     clean: all
   steps:
 
   - checkout: OutSystems/opscloud-opscoaching
     clean: true
-    displayName: 'Stop Infrastucture Script'
+    displayName: 'Start Infrastucture Script'
   
   - task: AzurePowerShell@5
     inputs:
