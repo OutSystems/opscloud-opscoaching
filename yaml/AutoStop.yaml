@@ -10,10 +10,10 @@ parameters:
 
 resources:
   repositories:
-  - repository: OutSystems/opscloud-opscoaching
+  - repository: joaooamaral/platform_ops_coaching
     type: github
-    endpoint: 'Coaching Infrastructure Provisioning'
-    name: 'OutSystems/opscloud-opscoaching'
+    endpoint: 'joaooamaral'
+    name: 'joaooamaral/platform_ops_coaching'
 
 jobs:
 - job: os_infra_stop
@@ -22,7 +22,7 @@ jobs:
     clean: all
   steps:
 
-  - checkout: OutSystems/opscloud-opscoaching
+  - checkout: joaooamaral/platform_ops_coaching
     clean: true
     displayName: 'Stop Infrastucture Script'
   
@@ -31,14 +31,14 @@ jobs:
       azureSubscription: 'ospsopscloud'
       ScriptType: 'InlineScript'
       Inline: |
-        $vmNamesToBeShutDown = Get-AzureRmVM -ResourceGroupName "${{ parameters.resourceGroupName }}"
+        $vmNamesToBeShutDown = Get-AzVm -ResourceGroupName "${{ parameters.resourceGroupName }}"
         foreach($vmName in $vmNamesToBeShutDown.name)
         {
-            $resource = Get-AzureRmResourceGroup -name "${{ parameters.resourceGroupName }}"
+            $resource = Get-AzResourceGroup "${{ parameters.resourceGroupName }}"
             if($vmName -ne $null)
             {  
                 Write-Output "Stopping virtual machine..." + $vmName
-                Stop-AzureRmVM -name $vmName -ResourceGroupName $resource.ResourceGroupName -StayProvisioned -Force
+                Stop-AzVm -name $vmName -ResourceGroupName $resource.ResourceGroupName -StayProvisioned -Force
             }   
             else
             {
