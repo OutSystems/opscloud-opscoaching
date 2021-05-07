@@ -118,27 +118,17 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command "
-        $vmNamesToBeShutDown = Get-AzVm -ResourceGroupName "${{ parameters.clientName }}-Coaching"
-        foreach($vmName in $vmNamesToBeShutDown.name)
+        if (${{ parameters.stopVMSchedule }} -ne 'NotDefined')
         {
-          $resource = Get-AzResourceGroup "${{ parameters.clientName }}-Coaching"
-          if($vmName -ne $null)
-          {  
-            Write-Output "Stopping virtual machine..." + $vmName
-             Stop-AzVm -name $vmName -ResourceGroupName $resource.ResourceGroupName -StayProvisioned -Force
-          }   
-          else
-          {
-            Write-output "Virtual machines from Resource Group ${{ parameters.clientName }}-Coaching not found"
-          }
-        }"'
-        $daysOfWeek = "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
-        $trigger = New-ScheduledTaskTrigger -Weekly -At ${{ parameters.stopVMSchedule }} -DaysOfWeek $daysOfWeek
-        $sp = New-ScheduledTaskPrincipal -GroupId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-        $stset = New-ScheduledTaskSettingsSet
-        $st = New-ScheduledTask -Action $action -Trigger $trigger -Principal $sp -Settings $stset
-        Register-ScheduledTask '${{ parameters.clientName }}-Stop' -InputObject $st
+          $argument = "-Command `"& 'C:\Scripts\PowerShell\AutoStopVMs.ps1' -RGName '${{ parameters.clientName }}-Coaching'`""
+          $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
+          $daysOfWeek = "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+          $trigger = New-ScheduledTaskTrigger -Weekly -At ${{ parameters.stopVMSchedule }} -DaysOfWeek $daysOfWeek
+          $sp = New-ScheduledTaskPrincipal -GroupId "NT AUTHORITY\SYSTEM" -RunLevel Highest
+          $stset = New-ScheduledTaskSettingsSet
+          $st = New-ScheduledTask -Action $action -Trigger $trigger -Principal $sp -Settings $stset
+          Register-ScheduledTask '${{ parameters.clientName }}-Stop' -InputObject $st
+        }
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Stop VMs Scheduled Task'
 
@@ -147,27 +137,17 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command "
-        $vmNamesToBeStarted = Get-AzVM -ResourceGroupName "${{ parameters.clientName }}-Coaching"
-        foreach($vmName in $vmNamesToBeStarted.name)
+        if (${{ parameters.startVMSchedule }} -ne 'NotDefined')
         {
-          $resource = Get-AzResourceGroup -Name "${{ parameters.clientName }}-Coaching"
-          if($vmName -ne $null)
-          {  
-              Write-Output "Starting virtual machine..." + $vmName
-              Start-AzVM -Name $vmName -ResourceGroupName $resource.ResourceGroupName
-          }   
-          else
-          {
-              Write-output "Virtual machines from Resource Group ${{ parameters.clientName }}-Coaching not found"
-          }
-        }"'
-        $daysOfWeek = "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
-        $trigger = New-ScheduledTaskTrigger -Weekly -At ${{ parameters.startVMSchedule }} -DaysOfWeek $daysOfWeek
-        $sp = New-ScheduledTaskPrincipal -GroupId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-        $stset = New-ScheduledTaskSettingsSet
-        $st = New-ScheduledTask -Action $action -Trigger $trigger -Principal $sp -Settings $stset
-        Register-ScheduledTask '${{ parameters.clientName }}-Start' -InputObject $st
+          $argument = "-Command `"& 'C:\Scripts\PowerShell\AutoStartVMs.ps1' -RGName '${{ parameters.clientName }}-Coaching'`""
+          $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
+          $daysOfWeek = "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+          $trigger = New-ScheduledTaskTrigger -Weekly -At ${{ parameters.startVMSchedule }} -DaysOfWeek $daysOfWeek
+          $sp = New-ScheduledTaskPrincipal -GroupId "NT AUTHORITY\SYSTEM" -RunLevel Highest
+          $stset = New-ScheduledTaskSettingsSet
+          $st = New-ScheduledTask -Action $action -Trigger $trigger -Principal $sp -Settings $stset
+          Register-ScheduledTask '${{ parameters.clientName }}-Start' -InputObject $st
+        }
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Start VMs Scheduled Task'
 ...
