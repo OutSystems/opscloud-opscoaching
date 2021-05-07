@@ -128,7 +128,7 @@ jobs:
           $sp = New-ScheduledTaskPrincipal -GroupId "NT AUTHORITY\SYSTEM" -RunLevel Highest
           $stset = New-ScheduledTaskSettingsSet
           $st = New-ScheduledTask -Action $action -Trigger $trigger -Principal $sp -Settings $stset
-          Register-ScheduledTask '${{ parameters.clientName }}-Stop' -InputObject $st
+          Register-ScheduledTask '${{ parameters.clientName }}-Coaching-Stop' -InputObject $st
         }
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Stop VMs Scheduled Task'
@@ -147,7 +147,7 @@ jobs:
           $sp = New-ScheduledTaskPrincipal -GroupId "NT AUTHORITY\SYSTEM" -RunLevel Highest
           $stset = New-ScheduledTaskSettingsSet
           $st = New-ScheduledTask -Action $action -Trigger $trigger -Principal $sp -Settings $stset
-          Register-ScheduledTask '${{ parameters.clientName }}-Start' -InputObject $st
+          Register-ScheduledTask '${{ parameters.clientName }}-Coaching-Start' -InputObject $st
         }
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Start VMs Scheduled Task'
