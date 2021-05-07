@@ -31,21 +31,23 @@ jobs:
       azureSubscription: 'ospsopscloud'
       ScriptType: 'InlineScript'
       Inline: |
-        $vmNamesToBeShutDown = Get-AzVm -ResourceGroupName "${{ parameters.resourceGroupName }}"
-        foreach($vmName in $vmNamesToBeShutDown.name)
+        $rgToDelete = (az group show -n "${{ parameters.resourceGroupName }}") | ConvertFrom-Json | Select -expand name
+        if ( $rgToDelete )
         {
-            $resource = Get-AzResourceGroup "${{ parameters.resourceGroupName }}"
-            if($vmName -ne $null)
-            {  
-                Write-Output "Stopping virtual machine..." + $vmName
-                Stop-AzVm -name $vmName -ResourceGroupName $resource.ResourceGroupName -StayProvisioned -Force
-            }   
-            else
-            {
-                Write-output "Virtual machine not found:" + $vmName
-            }
+          Write-Output "Resource Group $rgToDelete exists and will now be deleted"
+          az group delete -y -n "${{ parameters.resourceGroupName }}"
         }
+        else 
+        {
+          Write-Output "The Resource Group ${{ parameters.resourceGroupName }} that you entered does not exist... Please reenter the correct name and try again."
+          Exit
+        }
+        Write-Host "Completed deletion of ${{ parameters.resourceGroupName }} Resource Group"
+        Write-Host "Starting the deletion of Windows Scheduled Tasks"
+        Unregister-ScheduledTask -TaskName '${{ parameters.resourceGroupName }}-Stop' -Confirm:$false
+        Unregister-ScheduledTask -TaskName '${{ parameters.resourceGroupName }}-Start' -Confirm:$false
+        Write-Host "Completed deletion of Windows Scheduled Tasks"
       azurePowerShellVersion: 'LatestVersion'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
-    displayName: 'Stop Coaching Virtual Machines'
+    displayName: 'Delete infra resources'
 ...
