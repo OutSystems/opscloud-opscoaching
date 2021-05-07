@@ -118,7 +118,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        if ($${{ parameters.startVMSchedule }} -ne "NotDefined")
+        if ($${{ parameters.stopVMSchedule }} -ne "NotDefined")
         {
           $argument = "-Command `"& 'C:\Scripts\PowerShell\AutoStopVMs.ps1' -RGName '${{ parameters.clientName }}-Coaching'`""
           $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
@@ -137,7 +137,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        if (${{ parameters.startVMSchedule }} -ne "NotDefined")
+        if ($${{ parameters.startVMSchedule }} -ne "NotDefined")
         {
           $argument = "-Command `"& 'C:\Scripts\PowerShell\AutoStartVMs.ps1' -RGName '${{ parameters.clientName }}-Coaching'`""
           $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
