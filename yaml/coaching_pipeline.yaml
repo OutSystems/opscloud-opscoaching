@@ -14,7 +14,7 @@ parameters:
 - name: coachingPersons
   type: string
 - name: stopVMSchedule
-  displayName: (Optional) Scheduled hour in Portugal Timezone to shutdown VMs 
+  displayName: Scheduled hour in Portugal Timezone to shutdown VMs. If no autoshutdown is desired please input NotDefined 
   type: string
   default: 6pm
   values:
@@ -42,8 +42,9 @@ parameters:
     - 10 pm
     - 11 pm
     - 12 pm
+    - NotDefined
 - name: startVMSchedule
-  displayName: (Optional) Scheduled hour in Portugal Timezone to start VMs 
+  displayName: Scheduled hour in Portugal Timezone to start VMs. If no autostart is desired please input NotDefined
   type: string
   default: 9am
   values:
@@ -71,6 +72,7 @@ parameters:
     - 10 pm
     - 11 pm
     - 12 pm
+    - NotDefined
 
 resources:
   repositories:
@@ -116,7 +118,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        if (${{ parameters.stopVMSchedule }})
+        if (${{ parameters.stopVMSchedule -ne 'NotDefined'}})
         {
           $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command "
           $vmNamesToBeShutDown = Get-AzVm -ResourceGroupName "${{ parameters.clientName }}-Coaching"
@@ -149,7 +151,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        if (${{ parameters.startVMSchedule }})
+        if (${{ parameters.startVMSchedule -ne 'NotDefined'}})
         {
           $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command "
           $vmNamesToBeStarted = Get-AzVM -ResourceGroupName "${{ parameters.clientName }}-Coaching"
@@ -176,38 +178,4 @@ jobs:
         
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
     displayName: 'Start VMs Scheduled Task'
-
-
-
-
-
-
-
-
-
-
-
-  - task: AzurePowerShell@5
-    inputs:
-      azureSubscription: 'ospsopscloud'
-      ScriptType: 'InlineScript'
-      Inline: |
-        $vmNamesToBeStarted = Get-AzVM -ResourceGroupName "${{ parameters.resourceGroupName }}"
-        foreach($vmName in $vmNamesToBeStarted.name)
-        {
-            $resource = Get-AzResourceGroup -Name "${{ parameters.resourceGroupName }}"
-            if($vmName -ne $null)
-            {  
-                Write-Output "Starting virtual machine..." + $vmName
-                Start-AzVM -Name $vmName -ResourceGroupName $resource.ResourceGroupName
-            }   
-            else
-            {
-                Write-output "Virtual machine not found:" + $vmName
-            }
-        }
-      azurePowerShellVersion: 'LatestVersion'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-    displayName: 'Start Coaching Virtual Machines'
-
 ...
