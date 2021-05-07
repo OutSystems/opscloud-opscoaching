@@ -118,7 +118,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        if (${{ parameters.stopVMSchedule -ne 'NotDefined'}})
+        if (${{ parameters.stopVMSchedule }} -ne 'NotDefined')
         {
           $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command "
           $vmNamesToBeShutDown = Get-AzVm -ResourceGroupName "${{ parameters.clientName }}-Coaching"
@@ -151,7 +151,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        if (${{ parameters.startVMSchedule -ne 'NotDefined'}})
+        if (${{ parameters.startVMSchedule }} -ne 'NotDefined')
         {
           $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command "
           $vmNamesToBeStarted = Get-AzVM -ResourceGroupName "${{ parameters.clientName }}-Coaching"
