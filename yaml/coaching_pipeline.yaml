@@ -46,7 +46,7 @@ parameters:
 - name: startVMSchedule
   displayName: Scheduled hour in Portugal Timezone to start VMs. If no autostart is desired please input NotDefined
   type: string
-  default: 9am
+  default: 8am
   values:
     - 1am
     - 2am
