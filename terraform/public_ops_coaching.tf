@@ -31,7 +31,7 @@ terraform {
       version = "~> 2.40.0"
     }
     random = {
-      source = "hashicorp/random"
+      source  = "hashicorp/random"
       version = "~> 3.0.0"
     }
   }
@@ -43,9 +43,9 @@ provider "azurerm" {
 # RESOURCES
 #############################################################################
 locals {
-    admin_username = "oscoaching"
-    admin_password = "P@$$w0rd1234!"
-    script_url     = "https://raw.githubusercontent.com/OutSystems/opscloud-opscoaching/master/powershell/ops_coaching_setup.ps1"
+  admin_username = "oscoaching"
+  admin_password = "P@$$w0rd1234!"
+  script_url     = "https://raw.githubusercontent.com/OutSystems/opscloud-opscoaching/master/powershell/ops_coaching_setup.ps1"
 }
 resource "azurerm_resource_group" "rg-coaching" {
   name     = "${var.client-name}-Coaching"
@@ -57,7 +57,7 @@ resource "random_integer" "vnet-address-space" {
 }
 resource "azurerm_virtual_network" "vnet-coaching" {
   name                = "VNet-${var.client-name}-Coaching"
-  address_space       = ["10.${random_integer.vnet-address-space.result}.0.0/16"]  #To be decided based on a random number
+  address_space       = ["10.${random_integer.vnet-address-space.result}.0.0/16"] #To be decided based on a random number
   location            = var.location
   resource_group_name = azurerm_resource_group.rg-coaching.name
 }
@@ -65,7 +65,7 @@ resource "azurerm_subnet" "snet-coaching" {
   name                 = "SNet-${var.client-name}-Coaching"
   resource_group_name  = azurerm_resource_group.rg-coaching.name
   virtual_network_name = azurerm_virtual_network.vnet-coaching.name
-  address_prefixes     = ["10.${random_integer.vnet-address-space.result}.1.0/24"]  #To be decided based on a random number
+  address_prefixes     = ["10.${random_integer.vnet-address-space.result}.1.0/24"] #To be decided based on a random number
   service_endpoints    = ["Microsoft.Sql", "Microsoft.Web"]
 }
 resource "azurerm_network_security_group" "nsg-coaching" {
@@ -178,12 +178,12 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   vm_size                          = "Standard_B2ms" #2vCPUs / 8 GB RAM
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
-  
+
   storage_image_reference {
-  publisher = "MicrosoftWindowsServer"
-  offer     = "WindowsServer"
-  sku       = "2016-Datacenter"
-  version   = "latest"
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Datacenter"
+    version   = "latest"
   }
   storage_os_disk {
     name              = "VM-${count.index}-Coaching-OsDisk"
@@ -210,13 +210,13 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   }
 }
 resource "azurerm_virtual_machine_extension" "vm-coaching-ext" {
-  count              = var.coaching-persons * 3
-  name               = "VM-${count.index}-Coaching-Ext"
-  virtual_machine_id = azurerm_virtual_machine.vm-coaching[count.index].id
+  count                = var.coaching-persons * 3
+  name                 = "VM-${count.index}-Coaching-Ext"
+  virtual_machine_id   = azurerm_virtual_machine.vm-coaching[count.index].id
   publisher            = "Microsoft.Compute"
   type                 = "CustomScriptExtension"
   type_handler_version = "1.9"
-  protected_settings = <<PROTECTED_SETTINGS
+  protected_settings   = <<PROTECTED_SETTINGS
     {
       "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ops_coaching_setup.ps1"
     }
