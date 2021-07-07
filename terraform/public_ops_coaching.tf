@@ -134,14 +134,14 @@ resource "azurerm_public_ip" "pip-coaching" {
   name                    = "Pip-Coaching-${count.index}"
   location                = var.location
   resource_group_name     = azurerm_resource_group.rg-coaching.name
-  allocation_method       = "Dynamic"
+  allocation_method       = "Static"
   idle_timeout_in_minutes = 30
 }
 resource "azurerm_public_ip" "pip-sql" {
   name                    = "Pip-Coaching-SQL"
   location                = var.location
   resource_group_name     = azurerm_resource_group.rg-coaching.name
-  allocation_method       = "Dynamic"
+  allocation_method       = "Static"
   idle_timeout_in_minutes = 30
 }
 resource "azurerm_network_interface" "nic-coaching" {
