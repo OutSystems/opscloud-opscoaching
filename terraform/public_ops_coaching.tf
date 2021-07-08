@@ -231,7 +231,7 @@ resource "azurerm_virtual_machine_extension" "vm-coaching-ext" {
   SETTINGS
 }
 resource "azurerm_windows_virtual_machine" "vm-sql-coaching" {
-  name                  = "VM-SQL-Coaching"
+  name                  = "SQL-VM-Coaching"
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg-coaching.name
   network_interface_ids = [azurerm_network_interface.nic-sql.id]
