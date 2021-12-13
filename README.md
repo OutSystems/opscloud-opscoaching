@@ -17,7 +17,6 @@ If first time running a Terraform template, please do the following:
 
 * Install Azure CLI for [Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest&tabs=azure-cli), [Mac OS](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest) or [Linux](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) (It can take around 5 minutes to complete).
 * Once Azure CLI is installed, from PowerShell / Bash run `az login` to ensure the installation of Azure CLI is completed and you’re able to connect to our Azure subscription. You will need to login to Azure with your AD credentials (Example: joao.amaral@outsystems.com / secretpassword).
-    > If external use _external in your email address.
 
 * Download [version 0.14 of Terraform](https://releases.hashicorp.com/terraform/0.14.2/) and make sure you update the path environment variable
     Example steps for Windows:
