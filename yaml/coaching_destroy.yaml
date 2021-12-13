@@ -26,11 +26,13 @@ jobs:
     clean: true
     displayName: 'Destroy Infrastucture Script'
   
-  - task: AzurePowerShell@5
+
+  - task: AzureCLI@2
     inputs:
       azureSubscription: 'ospsopscloud'
-      ScriptType: 'InlineScript'
-      Inline: |
+      scriptType: 'ps'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
         $rgToDelete = (az group show -n "${{ parameters.resourceGroupName }}") | ConvertFrom-Json | Select -expand name
         if ( $rgToDelete )
         {
@@ -47,7 +49,6 @@ jobs:
         Unregister-ScheduledTask -TaskName '${{ parameters.resourceGroupName }}-Stop' -Confirm:$false
         Unregister-ScheduledTask -TaskName '${{ parameters.resourceGroupName }}-Start' -Confirm:$false
         Write-Host "Completed deletion of Windows Scheduled Tasks"
-      azurePowerShellVersion: 'LatestVersion'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Delete infra resources'
 ...
