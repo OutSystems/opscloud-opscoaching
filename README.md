@@ -20,7 +20,7 @@ If first time running a Terraform template, please do the following:
 
 * Download [version 1.1.4 of Terraform](https://releases.hashicorp.com/terraform/1.1.4/) and make sure you update the path environment variable
     Example steps for Windows:
-    1. Go to [Terraform 0.14 Download link](https://releases.hashicorp.com/terraform/1.1.4/).
+    1. Go to [Terraform 1.1.4 Download link](https://releases.hashicorp.com/terraform/1.1.4/).
     2. Download the applicable package to your local system.
     3. Extract the package to the folder `C:\Program Files (x64)`. This path is used as an example. However, you can also the Terraform executable to any other location in your local system.
     4. Update the path environment variable to include the folder where your Terraform executable is located.
