@@ -18,9 +18,9 @@ If first time running a Terraform template, please do the following:
 * Install Azure CLI for [Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest&tabs=azure-cli), [Mac OS](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest) or [Linux](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) (It can take around 5 minutes to complete).
 * Once Azure CLI is installed, from PowerShell / Bash run `az login` to ensure the installation of Azure CLI is completed and you’re able to connect to our Azure subscription. You will need to login to Azure with your AD credentials (Example: joao.amaral@outsystems.com / secretpassword).
 
-* Download [version 0.14 of Terraform](https://releases.hashicorp.com/terraform/0.14.2/) and make sure you update the path environment variable
+* Download [version 1.1.4 of Terraform](https://releases.hashicorp.com/terraform/1.1.4/) and make sure you update the path environment variable
     Example steps for Windows:
-    1. Go to [Terraform 0.14 Download link](https://releases.hashicorp.com/terraform/0.14.2/).
+    1. Go to [Terraform 0.14 Download link](https://releases.hashicorp.com/terraform/1.1.4/).
     2. Download the applicable package to your local system.
     3. Extract the package to the folder `C:\Program Files (x64)`. This path is used as an example. However, you can also the Terraform executable to any other location in your local system.
     4. Update the path environment variable to include the folder where your Terraform executable is located.
