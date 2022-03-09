@@ -13,6 +13,12 @@ parameters:
   type: string
 - name: coachingPersons
   type: string
+- name: adminUser
+  displayName: Enter the admin username that is to be used to access the servers. Please dont use a generic username such as admin or administrator
+  type: string
+- name: adminPass
+  displayName: Password must have 3 of the following - 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long
+  type: string 
 - name: stopVMSchedule
   displayName: Scheduled hour in Portugal Timezone to shutdown VMs. If no autoshutdown is desired please input NotDefined 
   type: string

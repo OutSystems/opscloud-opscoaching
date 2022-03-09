@@ -21,6 +21,15 @@ variable "coaching-persons" {
   type        = number
   description = "Enter how many people in total will be in the coaching"
 }
+variable "admin-user" {
+  type        = string
+  description = "Enter the admin username that is to be used to access the servers. Please dont use a generic username such as admin or administrator"
+}
+variable "admin-password" {
+  type        = string
+  description = "Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
+  sensitive = true
+}
 #############################################################################
 # PROVIDER
 #############################################################################
@@ -43,8 +52,6 @@ provider "azurerm" {
 # RESOURCES
 #############################################################################
 locals {
-  admin_username = "oscoaching"
-  admin_password = "P@$$w0rd1234!"
   script_url     = "https://raw.githubusercontent.com/OutSystems/opscloud-opscoaching/master/powershell/ops_coaching_setup.ps1"
 }
 resource "azurerm_resource_group" "rg-coaching" {
@@ -201,8 +208,8 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   }
   os_profile {
     computer_name  = "VM-${count.index}-Coaching"
-    admin_username = local.admin_username
-    admin_password = local.admin_password
+    admin_username = var.admin-user
+    admin_password = var.admin-password
   }
   os_profile_windows_config {
     enable_automatic_upgrades = false
@@ -236,8 +243,8 @@ resource "azurerm_windows_virtual_machine" "vm-sql-coaching" {
   resource_group_name   = azurerm_resource_group.rg-coaching.name
   network_interface_ids = [azurerm_network_interface.nic-sql.id]
   size                  = "Standard_B2ms"
-  admin_username        = local.admin_username
-  admin_password        = local.admin_password
+  admin_username        = var.admin-user
+  admin_password        = var.admin-password
   source_image_reference {
     publisher = "MicrosoftSQLServer"
     offer     = "SQL2016SP2-WS2016"
@@ -255,8 +262,8 @@ resource "azurerm_mssql_virtual_machine" "sql-instance-coaching" {
   sql_license_type                 = "PAYG"
   sql_connectivity_port            = 1433
   sql_connectivity_type            = "PRIVATE"
-  sql_connectivity_update_password = local.admin_password
-  sql_connectivity_update_username = local.admin_username
+  sql_connectivity_update_password = var.admin-password
+  sql_connectivity_update_username = var.admin-user
 }
 #############################################################################
 # OUTPUTS
@@ -275,5 +282,5 @@ output "SQL-IP" {
 }
 output "vm-creds" {
   description = "VMs Credentials"
-  value       = "The credentials to access all the servers (SQL included) are: ${local.admin_username} / ${local.admin_password}"
+  value       = "The credentials to access all the servers (SQL included) are: ${var.admin-user} / ${var.admin-password}"
 }
