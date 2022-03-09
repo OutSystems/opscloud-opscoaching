@@ -280,7 +280,3 @@ output "SQL-IP" {
   description = "Coaching's SQL Server IP."
   value       = "Private IP: ${azurerm_network_interface.nic-sql.private_ip_address} / Public IP: ${azurerm_windows_virtual_machine.vm-sql-coaching.public_ip_address}"
 }
-output "vm-creds" {
-  description = "VMs Credentials"
-  value       = "The credentials to access all the servers (SQL included) are: ${var.admin-user} / ${var.admin-password}"
-}

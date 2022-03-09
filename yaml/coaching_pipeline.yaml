@@ -114,7 +114,7 @@ jobs:
       command: 'apply'
       workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\'
       environmentServiceName: 'ospsopscloud'
-      commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="coaching-persons=${{ parameters.coachingPersons }}"'
+      commandOptions: '-auto-approve -var="client-name=${{ parameters.clientName }}" -var="location=${{ parameters.resourceRegion }}" -var="coaching-persons=${{ parameters.coachingPersons }}" -var="admin-user=${{ parameters.adminUser }}" -var="admin-password=${{ parameters.adminPass }}"'
       allowTelemetryCollection: false
     displayName: 'Run Terraform Script'
     
