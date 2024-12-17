@@ -2,7 +2,7 @@
 # DATA
 #############################################################################
 data "azurerm_public_ip" "FEs-PIP" {
-  count               = var.coaching-persons * 3
+  count               = var.coaching-persons * 4
   name                = azurerm_public_ip.pip-coaching[count.index].name
   resource_group_name = azurerm_virtual_machine.vm-coaching[count.index].resource_group_name
 }
