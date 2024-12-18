@@ -137,7 +137,7 @@ resource "azurerm_network_security_rule" "nsg-coaching-fe-in-mssql" {
   network_security_group_name = azurerm_network_security_group.nsg-coaching.name
 }
 resource "azurerm_public_ip" "pip-coaching" {
-  count                   = var.coaching-persons * 3
+  count                   = var.coaching-persons * 4
   name                    = "Pip-Coaching-${count.index}"
   location                = var.location
   resource_group_name     = azurerm_resource_group.rg-coaching.name
@@ -152,7 +152,7 @@ resource "azurerm_public_ip" "pip-sql" {
   idle_timeout_in_minutes = 30
 }
 resource "azurerm_network_interface" "nic-coaching" {
-  count               = var.coaching-persons * 3
+  count               = var.coaching-persons * 4
   name                = "Nic-${count.index}-Coaching"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg-coaching.name
@@ -177,7 +177,7 @@ resource "azurerm_network_interface" "nic-sql" {
   }
 }
 resource "azurerm_virtual_machine" "vm-coaching" {
-  count                            = var.coaching-persons * 3
+  count                            = var.coaching-persons * 4
   name                             = "VM-${count.index}-Coaching"
   location                         = var.location
   resource_group_name              = azurerm_resource_group.rg-coaching.name
@@ -217,7 +217,7 @@ resource "azurerm_virtual_machine" "vm-coaching" {
   }
 }
 resource "azurerm_virtual_machine_extension" "vm-coaching-ext" {
-  count                = var.coaching-persons * 3
+  count                = var.coaching-persons * 4
   name                 = "VM-${count.index}-Coaching-Ext"
   virtual_machine_id   = azurerm_virtual_machine.vm-coaching[count.index].id
   publisher            = "Microsoft.Compute"
